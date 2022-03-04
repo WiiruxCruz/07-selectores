@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PaisSmall } from '../../interfaces/paises.interface';
+import { Pais, PaisSmall } from '../../interfaces/paises.interface';
 import { PaisesService } from '../../services/paises.service';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -14,10 +14,12 @@ export class SelectorPageComponent implements OnInit {
 
 	miFormulario: FormGroup = this.fb.group({
 		region: [ '', Validators.required ],
-		pais: [ '', Validators.required ]
+		pais: [ '', Validators.required ],
+		frontera: [ '', Validators.required ]
 	})
 
 	paises: PaisSmall[] = [];
+	fronteras: Pais[] = [];
 
 	//lenar selectores
 	regiones: string[] = [];
@@ -50,7 +52,8 @@ export class SelectorPageComponent implements OnInit {
 		this.miFormulario.get('region')?.valueChanges
 		.pipe(
 			tap( ( _ ) => {
-				this.miFormulario.get('pais')?.reset('');
+					this.miFormulario.get('pais')?.reset('');
+					//this.miFormulario.get('frontera')?.reset('');
 				}
 			),
 			switchMap( region => this.paisesService.getPaisesPorRegion( region ) )
@@ -58,7 +61,25 @@ export class SelectorPageComponent implements OnInit {
 		.subscribe( paises => {
 			//console.log(paises);
 			this.paises = paises;
-		})
+		});
+
+
+		//Pais
+		this.miFormulario.get('pais')?.valueChanges
+		/*
+		.pipe(
+			tap( ( _ ) => {
+					this.miFormulario.get('frontera')?.reset('');
+				}
+			),
+			switchMap( pais => this.paisesService.getPaisPorCodigo( pais ) )
+
+		)
+		*/
+		.subscribe( pais => {
+			console.log(pais);
+		});
+
 
 
 	}
