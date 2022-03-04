@@ -18,11 +18,10 @@ export class SelectorPageComponent implements OnInit {
 		frontera: [ '', Validators.required ]
 	})
 
-	paises: PaisSmall[] = [];
-	fronteras: Pais[] = [];
-
 	//lenar selectores
 	regiones: string[] = [];
+	paises: PaisSmall[] = [];
+	fronteras: string[] = [];
 
 	constructor(
 	  private fb: FormBuilder,
@@ -66,18 +65,19 @@ export class SelectorPageComponent implements OnInit {
 
 		//Pais
 		this.miFormulario.get('pais')?.valueChanges
-		/*
 		.pipe(
-			tap( ( _ ) => {
+
+			tap( () => {
+					this.fronteras = [];
 					this.miFormulario.get('frontera')?.reset('');
 				}
 			),
-			switchMap( pais => this.paisesService.getPaisPorCodigo( pais ) )
+			switchMap( codigo => this.paisesService.getPaisPorCodigo( codigo ) )
 
 		)
-		*/
 		.subscribe( pais => {
 			console.log(pais);
+			this.fronteras = pais?.borders || [];
 		});
 
 
