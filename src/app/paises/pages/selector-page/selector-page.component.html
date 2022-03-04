@@ -61,9 +61,9 @@
 				<option value=""> -- Seleccione Frontera -- </option>
 				<option
 					*ngFor="let frontera of fronteras"
-					[value]="frontera"
+					[value]="frontera.alpha3Code"
 				>
-					{{ frontera }}
+					{{ frontera.name }}
 				</option>
 
 			</select>
